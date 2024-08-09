@@ -9,7 +9,7 @@ import aiohttp
 import logging
 
 import sqlite3
-from config import API_TOKEN
+from config import API_TOKEN, WEATHER_API_KEY
 
 # Создаем объект бота и диспетчера
 bot = Bot(token=API_TOKEN)
@@ -78,7 +78,15 @@ async def city(message: Message, state:FSMContext):
                temperature = main['temp']
                humidity = main['humidity']
                description = weather['description']
-                
+
+               weather_report = (f"Город - {user_data['city']}\\n"
+                                 f"Температура - {temperature}\\n"
+                                 f"Влажность воздуха - {humidity}\\n"
+                                 f"Описание погоды - {description}")
+
+           else:
+               await message.answer("Не удалось получить данные о погоде")
+    await state.clear()
 
 async def main():
     # Запуск бота
