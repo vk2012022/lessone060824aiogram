@@ -1,19 +1,23 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
-from aiogram.types import Message, InputFile, FSInputFile
+from aiogram.types import Message, InputFile, FSInputFile, CallbackQuery
 from aiogram import F
 from gtts import gTTS
 import os
-
+from config import API_TOKEN
 import random
 # Замените 'YOUR_BOT_TOKEN' на токен вашего бота
-API_TOKEN = '7355440394:AAGqcHreAmY-DDmdHQrBNvz0ay0F_rJMQbU'
+import keyboards as kb
 
 # Создаем объект бота и диспетчера
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
+@dp.callback_query(F.data == 'news')
+async def news(callback: CallbackQuery):
+    await callback.answer("Новости подгружаются", show_alert=True)
+    await callback.message.edit_text('Вот свежие новости!', reply_markup=await kb.test_keyboard())
 
 @dp.message(Command('doc'))
 async def doc(message: Message):
@@ -64,6 +68,10 @@ async def react_photo(message: Message):
 async def aitext(message: Message):
     await message.answer("ИИ стал универсальным термином для приложений, которые выполняют сложные задачи, которые когда-то требовали участия человека, например, общение с клиентами в Интернете или игра в шахматы.")
 
+@dp.message(F.text == "Тестовая кнопка 1")
+async def test_button(message: Message):
+   await message.answer("Обработка нажатия на reply кнопку")
+
 
 @dp.message(Command("help"))
 async def help(message: Message):
@@ -73,7 +81,7 @@ async def help(message: Message):
 # Обработчик команды /start
 @dp.message(Command("start"))
 async def send_welcome(message: Message):
-    await message.answer(f'Приветики, {message.from_user.full_name}')
+    await message.answer(f'Приветики, {message.from_user.full_name}', reply_markup=kb.inline_keyboard_test)
 
 
 

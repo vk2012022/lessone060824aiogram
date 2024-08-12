@@ -4,12 +4,12 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 
 
-from config import TOKEN
+from config import API_TOKEN
 
 import random
-from config import TOKEN
 
-bot = Bot(token=TOKEN)
+
+bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
 @dp.message(Command('photo'))
